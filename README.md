@@ -5,7 +5,7 @@ Small file actions, with a full editor when you need it.
 Convert photos, edit PDF pages, trim and join videos, and read text from images.
 File processing stays on your computer. No account, uploads or ads.
 
-**[Download the Ubuntu beta](https://github.com/ayushxaw/filewink-downloads/releases/download/v0.5.4-beta.1/filewink_0.5.4~beta1_amd64.deb)** · [Release notes and checksums](https://github.com/ayushxaw/filewink-downloads/releases/tag/v0.5.4-beta.1)
+**[Download the Ubuntu beta](https://github.com/ayushxaw/filewink-downloads/releases/download/v0.5.4-beta.1/filewink-0.5.4-beta1-ubuntu-amd64.deb)** · [Release notes and checksums](https://github.com/ayushxaw/filewink-downloads/releases/tag/v0.5.4-beta.1)
 
 For **Ubuntu 24.04 or 26.04 on 64-bit Intel/AMD computers**. This is an early
 beta. Other distributions, older Ubuntu releases and ARM are not supported yet.
@@ -17,7 +17,7 @@ beta. Other distributions, older Ubuntu releases and ARM are not supported yet.
 Download the `.deb`, open a terminal in its folder, and run:
 
 ```bash
-sudo apt install ./filewink_0.5.4~beta1_amd64.deb
+sudo apt install ./filewink-0.5.4-beta1-ubuntu-amd64.deb
 ```
 
 Apt installs the required Ubuntu libraries and conversion tools. LibreOffice
