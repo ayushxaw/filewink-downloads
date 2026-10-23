@@ -28,6 +28,9 @@ Filewink. Future published versions arrive through normal APT upgrades.
 [Repository details](https://ayushxaw.github.io/filewink-downloads/apt/) ·
 [Setup checksums](https://github.com/ayushxaw/filewink-downloads/releases/tag/apt-setup-1)
 
+Installation, upgrade selection, thirteen packaged output checks and removal
+pass on Ubuntu 24.04 in the [public verification run](https://github.com/ayushxaw/filewink-downloads/actions/runs/39938333880).
+
 To disable this update source while keeping the app:
 
 ```bash
