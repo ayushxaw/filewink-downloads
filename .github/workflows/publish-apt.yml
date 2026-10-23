@@ -54,6 +54,7 @@ jobs:
   verify-install:
     needs: deploy
     runs-on: ubuntu-24.04
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - name: Download the published setup package
@@ -70,6 +71,33 @@ jobs:
           assert hashlib.sha256(data).hexdigest() == package['sha256']
           pathlib.Path('setup-package.txt').write_text(path)
           PY
+      - name: Use Ubuntu and Filewink sources in this disposable runner
+        run: |
+          # Exclude unrelated vendor repositories shipped in the runner image.
+          sudo mkdir -p "$RUNNER_TEMP/image-apt-sources"
+          sudo find /etc/apt/sources.list.d -maxdepth 1 -type f -exec mv -t "$RUNNER_TEMP/image-apt-sources" {} +
+          if [ -f /etc/apt/sources.list ]; then
+            sudo mv /etc/apt/sources.list "$RUNNER_TEMP/image-apt-sources/"
+          fi
+          sudo tee /etc/apt/sources.list.d/ubuntu.sources > /dev/null <<'EOF'
+          Types: deb
+          URIs: https://archive.ubuntu.com/ubuntu/
+          Suites: noble noble-updates
+          Components: main universe restricted multiverse
+          Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+
+          Types: deb
+          URIs: https://security.ubuntu.com/ubuntu/
+          Suites: noble-security
+          Components: main universe restricted multiverse
+          Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+          EOF
+          sudo tee /etc/apt/apt.conf.d/99-filewink-ci-network > /dev/null <<'EOF'
+          Acquire::Retries "2";
+          Acquire::http::Timeout "30";
+          Acquire::https::Timeout "30";
+          Acquire::ForceIPv4 "true";
+          EOF
       - name: Install through the live signed APT feed
         run: |
           sudo apt-get install -y "./$(cat setup-package.txt)"
