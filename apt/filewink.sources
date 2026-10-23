@@ -1,0 +1,6 @@
+Types: deb
+URIs: https://ayushxaw.github.io/filewink-downloads/apt/
+Suites: ubuntu
+Components: main
+Architectures: amd64
+Signed-By: /usr/share/keyrings/filewink-archive-keyring.asc

@@ -1,0 +1,108 @@
+name: Publish signed APT repository
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'apt/**'
+      - 'tools/**'
+      - 'tests/**'
+      - '.github/workflows/publish-apt.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: filewink-apt-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pages: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test repository validation
+        run: python3 -m unittest discover -s tests -v
+      - name: Verify signed metadata and assemble packages
+        run: python3 tools/assemble_apt.py --output _site --fingerprint B63801ACA2BA93F0A7450BACB04130F8E6E8A88F
+      - name: Exercise APT and reject altered metadata
+        run: python3 tools/check_apt_client.py --site _site
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+  deploy:
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publish repository
+        id: deployment
+        uses: actions/deploy-pages@v4
+  verify-install:
+    needs: deploy
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download the published setup package
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, pathlib, subprocess
+          manifest = json.loads(pathlib.Path('apt/manifest.json').read_text())
+          package = next(p for p in manifest['packages'] if p['name'] == 'filewink-archive-keyring')
+          path = pathlib.Path(package['filename']).name
+          url = 'https://ayushxaw.github.io/filewink-downloads/apt/' + package['filename']
+          subprocess.run(['curl', '--fail', '--location', '--retry', '5', '--output', path, url], check=True)
+          data = pathlib.Path(path).read_bytes()
+          assert len(data) == package['size']
+          assert hashlib.sha256(data).hexdigest() == package['sha256']
+          pathlib.Path('setup-package.txt').write_text(path)
+          PY
+      - name: Install through the live signed APT feed
+        run: |
+          sudo apt-get install -y "./$(cat setup-package.txt)"
+          sudo apt-get -o APT::Update::Error-Mode=any update
+          apt-cache policy filewink filewink-archive-keyring
+          sudo apt-get install -y filewink
+      - name: Check upgrade selection from an older installed version
+        run: |
+          # A disposable control-only package exercises APT's update policy.
+          # It is never published and contains no app files.
+          sudo apt-get remove -y filewink
+          mkdir -p "$RUNNER_TEMP/old-filewink/DEBIAN"
+          cat > "$RUNNER_TEMP/old-filewink/DEBIAN/control" <<'EOF'
+          Package: filewink
+          Version: 0.0.0
+          Architecture: amd64
+          Maintainer: Filewink test <test@example.invalid>
+          Description: Disposable APT upgrade fixture
+          EOF
+          dpkg-deb --root-owner-group --build "$RUNNER_TEMP/old-filewink" "$RUNNER_TEMP/old-filewink.deb"
+          sudo dpkg -i "$RUNNER_TEMP/old-filewink.deb"
+          apt-get --simulate upgrade | tee "$RUNNER_TEMP/upgrade-plan.txt"
+          grep '^Inst filewink \[0.0.0\]' "$RUNNER_TEMP/upgrade-plan.txt"
+          sudo apt-get install -y --only-upgrade filewink
+      - name: Check installed tools and packaged app
+        env:
+          QT_QPA_PLATFORM: offscreen
+        run: |
+          timeout 180s filewink --packaging-smoke-test --require-tools --report "$RUNNER_TEMP/filewink-apt-smoke.json"
+          cat "$RUNNER_TEMP/filewink-apt-smoke.json"
+      - name: Remove app and update source
+        run: |
+          sudo apt-get remove -y filewink
+          sudo apt-get purge -y filewink-archive-keyring
+          test ! -e /etc/apt/sources.list.d/filewink.sources
+          test ! -e /usr/share/keyrings/filewink-archive-keyring.asc

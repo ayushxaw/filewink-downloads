@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "fingerprint": "B63801ACA2BA93F0A7450BACB04130F8E6E8A88F",
+  "suite": "ubuntu",
+  "component": "main",
+  "architecture": "amd64",
+  "packages": [
+    {
+      "name": "filewink",
+      "version": "0.5.4~beta1",
+      "filename": "pool/main/f/filewink/filewink-0.5.4-beta1-ubuntu-amd64.deb",
+      "sha256": "822f374bb544ef6fe16de3b96127d08c510891361a8536a478c693d5b2f4d1cd",
+      "size": 68400864,
+      "source_url": "https://github.com/ayushxaw/filewink-downloads/releases/download/v0.5.4-beta.1/filewink-0.5.4-beta1-ubuntu-amd64.deb"
+    },
+    {
+      "name": "filewink-archive-keyring",
+      "version": "2026.10.23.1",
+      "filename": "pool/main/f/filewink-archive-keyring/filewink-archive-keyring_2026.10.23.1_all.deb",
+      "sha256": "57850915250345ecaf22a7c70575d6b3a8a5c6d643ebeae199a0b4640cfa4708",
+      "size": 4044,
+      "source_url": "https://github.com/ayushxaw/filewink-downloads/releases/download/apt-setup-1/filewink-archive-keyring_2026.10.23.1_all.deb"
+    }
+  ]
+}

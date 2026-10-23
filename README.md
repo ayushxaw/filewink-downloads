@@ -12,9 +12,31 @@ beta. Other distributions, older Ubuntu releases and ARM are not supported yet.
 
 ![Filewink action wheel](images/action-wheel.png)
 
-## Install
+## Install with APT
 
-Download the `.deb`, open a terminal in its folder, and run:
+Download the [APT setup package](https://github.com/ayushxaw/filewink-downloads/releases/download/apt-setup-1/filewink-archive-keyring_2026.10.23.1_all.deb),
+open a terminal in its folder, and run:
+
+```bash
+sudo apt install ./filewink-archive-keyring_2026.10.23.1_all.deb
+sudo apt update
+sudo apt install filewink
+```
+
+The small setup package adds a public signing key and a source scoped to
+Filewink. Future published versions arrive through normal APT upgrades.
+[Repository details](https://ayushxaw.github.io/filewink-downloads/apt/) ·
+[Setup checksums](https://github.com/ayushxaw/filewink-downloads/releases/tag/apt-setup-1)
+
+To disable this update source while keeping the app:
+
+```bash
+sudo apt purge filewink-archive-keyring
+```
+
+### Direct install
+
+You can also download the app `.deb`, open a terminal in its folder, and run:
 
 ```bash
 sudo apt install ./filewink-0.5.4-beta1-ubuntu-amd64.deb
@@ -53,6 +75,7 @@ If you enabled user gestures, remove them before removing the app:
 ```bash
 filewink-integrate --uninstall
 sudo apt remove filewink
+sudo apt purge filewink-archive-keyring  # if you enabled APT updates
 ```
 
 Quit Filewink first. Your originals, generated files and settings are kept.

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Install Filewink with APT</title>
+<style>
+  :root { color-scheme: light dark; font-family: system-ui, sans-serif; }
+  body { max-width: 46rem; margin: 4rem auto; padding: 0 1.25rem; line-height: 1.65; }
+  h1 { line-height: 1.2; letter-spacing: -.035em; }
+  a { color: #326bc5; }
+  pre { padding: 1rem; border: 1px solid #8886; border-radius: .5rem; overflow-x: auto; }
+  code { font-size: .9rem; overflow-wrap: anywhere; }
+  small { display: block; margin-top: 2rem; }
+</style>
+<main>
+  <h1>Filewink, a few commands away.</h1>
+  <p>Quick file actions and editors, on your computer. Free to use, with no account or ads.</p>
+  <p>This beta supports <strong>Ubuntu 24.04 and 26.04 on 64-bit Intel/AMD computers</strong>.</p>
+  <p>Download the <a href="https://github.com/ayushxaw/filewink-downloads/releases/download/apt-setup-1/filewink-archive-keyring_2026.10.23.1_all.deb">APT setup package</a>, open a terminal in its folder, and run:</p>
+  <pre><code>sudo apt install ./filewink-archive-keyring_2026.10.23.1_all.deb
+sudo apt update
+sudo apt install filewink</code></pre>
+  <p>Open Filewink from Applications. For quick actions on a file, choose <strong>Open With → Filewink</strong>. Enable Files gestures in settings for Shift+hold in GNOME Files.</p>
+  <p>The setup package adds a public signing key and a source trusted only for Filewink. Future versions arrive through normal APT upgrades when published.</p>
+  <p><a href="https://github.com/ayushxaw/filewink-downloads">Features and help</a> · <a href="https://github.com/ayushxaw/filewink-downloads/releases/tag/v0.5.4-beta.1">Direct app download and dependency sources</a> · <a href="https://github.com/ayushxaw/filewink-downloads/releases/tag/apt-setup-1">Setup checksums</a></p>
+  <small>Archive key fingerprint:<br><code>B63801ACA2BA93F0A7450BACB04130F8E6E8A88F</code><br><a href="filewink.asc">Public key</a> · <a href="filewink.sources">APT source configuration</a></small>
+  <p>To remove the update source while keeping the app:</p>
+  <pre><code>sudo apt purge filewink-archive-keyring</code></pre>
+  <small>Made by Ayush Awasthi.</small>
+</main>
+</html>

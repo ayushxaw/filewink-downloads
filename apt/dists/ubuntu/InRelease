@@ -1,0 +1,35 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+Origin: Filewink
+Label: Filewink
+Suite: ubuntu
+Codename: ubuntu
+Architectures: amd64
+Components: main
+Description: Filewink for Ubuntu 24.04 and 26.04 amd64 (beta)
+Date: Fri, 23 Oct 2026 10:03:10 GMT
+NotAutomatic: yes
+ButAutomaticUpgrades: yes
+SHA256:
+ bc6f020de194d64c30d72ac0ce5a31aaba38111e9394f17b78741e72086f5e3d 2345 main/binary-amd64/Packages
+ 3b7193d9f7949f57e030af3a79f66f7d9694486c6fb4415aacfee4bd67bf2312 1178 main/binary-amd64/Packages.gz
+SHA512:
+ bd86c7b565904d450a46032a932cbda29da82c043e2315bc2a5bcff1162b82c3c359b98ce7cd696dea7b45143387b51541f31d8e1801779d5ae5ae3211cefd5a 2345 main/binary-amd64/Packages
+ 20f963fba8d248947e98c55f0ba914e9643c27b41a1623170b4b2db49d687e3b191d24ead258cce0f7a56c5cdfb26bb1f9083963179a72e904eeab6ca2d4880f 1178 main/binary-amd64/Packages.gz
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEtjgBrKK6k/CnRQussEEw+OboqI8FAmrbMN4ACgkQsEEw+Obo
+qI8zmg//XKk1S38d6+RvMuqbShBuHoGRjpMMaMtMLejFqYsNRikxNiLX6QwjiGYI
+pT61DdZduBW1nSzxTmxCU3M0uYl9auzfc/itt+HbU50NgHQalTvp/Ja6mPDQ3Sjr
+3VTTF9YgNCWK+8kQrLbXTSdqnix0AP4cMZEiRYpidHTZ18A9du8CkR0h3w9n9aQj
+TFuXJcJNxEt6Q6wYaYZkNtfwo9t35KudewZL/ptY783B9djYy6yQ043P4IvxOjya
+AGwIVpyjMmemV7dyEiRsdRqhaQs7B/0r0Plq3O6iVBTkEoK9U2Zu4xlXgOUsqHku
+6USOPGAIvCJMDhaQWIbID7Aiu5okKEnrZ0ZVYI+Dbg0J8pnZkPmK8dU8QdhcMdhe
+93IiQGHFavuOnhLU0pytJXkLi/wU5qf4/jZ8KmXSTdqcqQCJkxrY2pBHrZjWX3jL
+P/tiHxzJDO5ugq4XixVUQ/yJUftktms5frYPd3MbqxOUCgmgSyxvmgGa5qK+hGrR
+kQ3zt/TtXqS4oWzctNOLnvy9O+q9ThEg/cn5JpjwLcmnqUUawF1s3JB0SBvJAi8u
+5UfgFw2VZkPhusNFmFPrBBVvH2NhYS0+PCuD2FNW7xWyHcQeliISnjwOL7QxyPqE
+E2Ble1rCXHErOWt85EAj7b8c2DZk5n9fGHA4uu9gLOI7C+hFh2M=
+=TAhb
+-----END PGP SIGNATURE-----
