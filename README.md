@@ -7,12 +7,20 @@ File processing stays on your computer. No account, uploads or ads.
 
 **[Download the Ubuntu beta](https://github.com/ayushxaw/filewink-downloads/releases/download/v0.5.4-beta.1/filewink-0.5.4-beta1-ubuntu-amd64.deb)** · [Release notes and checksums](https://github.com/ayushxaw/filewink-downloads/releases/tag/v0.5.4-beta.1)
 
-For **Ubuntu 24.04 or 26.04 on 64-bit Intel/AMD computers**. This is an early
-beta. Other distributions, older Ubuntu releases and ARM are not supported yet.
+For **Ubuntu 24.04 on 64-bit Intel/AMD computers**. This is an early beta.
+The current beta1 can crash during video playback on a minimal Ubuntu 26.04
+installation; a replacement package is being checked. Use Ubuntu 24.04 for
+this download. Other distributions, older Ubuntu releases and ARM are not
+supported yet.
 
 ![Filewink action wheel](images/action-wheel.png)
 
 ## Install with APT
+
+**APT updates are temporarily unavailable while the custom domain's HTTPS
+setup is repaired.** Use the direct `.deb` installation below for now. Existing
+packages and signed metadata are retained. Keep signature and HTTPS checks
+enabled; an HTTP redirect is not a reason to disable them.
 
 Download the [APT setup package](https://github.com/ayushxaw/filewink-downloads/releases/download/apt-setup-1/filewink-archive-keyring_2026.10.23.1_all.deb),
 open a terminal in its folder, and run:
@@ -29,7 +37,9 @@ Filewink. Future published versions arrive through normal APT upgrades.
 [Setup checksums](https://github.com/ayushxaw/filewink-downloads/releases/tag/apt-setup-1)
 
 Installation, upgrade selection, thirteen packaged output checks and removal
-pass on Ubuntu 24.04 in the [public verification run](https://github.com/ayushxaw/filewink-downloads/actions/runs/39938333880).
+passed on Ubuntu 24.04 in the [earlier public verification run](https://github.com/ayushxaw/filewink-downloads/actions/runs/39938333880).
+That result predates the domain issue above and does not establish current feed
+availability.
 
 To disable this update source while keeping the app:
 
