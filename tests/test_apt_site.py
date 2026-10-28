@@ -196,6 +196,70 @@ class AptSiteTests(unittest.TestCase):
         self.assertFalse(self.output.exists())
         self.assertEqual(list(self.root.glob(".filewink-apt-site-*")), [])
 
+    def test_homepage_does_not_change_signed_feed(self):
+        website = self.root / "homepage"
+        (website / "assets").mkdir(parents=True)
+        (website / "index.html").write_text('<a href="apt/">APT</a>')
+        (website / "assets/logo.svg").write_text("<svg></svg>")
+        result, _ = self.assemble(website=website)
+        self.assertEqual((result / "index.html").read_bytes(), (website / "index.html").read_bytes())
+        self.assertTrue((result / "assets/logo.svg").is_file())
+        for relative in ("dists/ubuntu/InRelease", "dists/ubuntu/Release", "dists/ubuntu/Release.gpg", "dists/ubuntu/main/binary-amd64/Packages", "dists/ubuntu/main/binary-amd64/Packages.gz", "filewink.asc", "filewink.sources", "manifest.json", "index.html"):
+            self.assertEqual((result / "apt" / relative).read_bytes(), (self.source / relative).read_bytes())
+        self.assertEqual((result / "apt" / self.package["filename"]).read_bytes(), self.payload)
+
+    def test_homepage_cannot_override_apt_before_download(self):
+        website = self.root / "homepage"
+        (website / "apt").mkdir(parents=True)
+        (website / "index.html").write_text("Home")
+        (website / "apt/InRelease").write_text("Replaced metadata")
+        with self.assertRaisesRegex(ValueError, "must not replace"):
+            self.assemble(website=website)
+        self.assertFalse(self.output.exists())
+
+    def test_homepage_rejects_linked_private_files(self):
+        website = self.root / "homepage"
+        website.mkdir()
+        (website / "index.html").write_text("Home")
+        (website / "notes.txt").symlink_to(self.source / "manifest.json")
+        with self.assertRaisesRegex(ValueError, "symlinks"):
+            self.assemble(website=website)
+        self.assertFalse(self.output.exists())
+
+    def test_homepage_reserved_paths_are_rejected_even_when_empty(self):
+        website = self.root / "homepage"
+        website.mkdir()
+        (website / "index.html").write_text("Home")
+        for name in ("apt", "CNAME"):
+            with self.subTest(name=name):
+                reserved = website / name
+                reserved.mkdir()
+                with patch.object(assembler, "download_asset") as download:
+                    with self.assertRaisesRegex(ValueError, "must not replace"):
+                        assembler.assemble(self.source, self.output, website=website)
+                download.assert_not_called()
+                reserved.rmdir()
+        self.assertFalse(self.output.exists())
+
+    def test_homepage_cannot_set_the_custom_domain(self):
+        website = self.root / "homepage"
+        website.mkdir()
+        (website / "index.html").write_text("Home")
+        (website / "CNAME").write_text("unexpected.example")
+        with patch.object(assembler, "download_asset") as download:
+            with self.assertRaisesRegex(ValueError, "domain settings"):
+                assembler.assemble(self.source, self.output, website=website)
+        download.assert_not_called()
+        self.assertFalse(self.output.exists())
+
+    def test_homepage_needs_a_homepage(self):
+        website = self.root / "homepage"
+        website.mkdir()
+        (website / "style.css").write_text("body {}")
+        with self.assertRaisesRegex(ValueError, "index.html"):
+            self.assemble(website=website)
+        self.assertFalse(self.output.exists())
+
     def test_installer_size_failure_leaves_no_deployment(self):
         def truncated(package, destination):
             destination.write_bytes(self.payload[:-1])

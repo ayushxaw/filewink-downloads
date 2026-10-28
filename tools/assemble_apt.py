@@ -380,7 +380,28 @@ def download_asset(package, destination):
     )
 
 
-def assemble(source, output, *, fingerprint=None):
+def website_files(website):
+    """Read a static homepage without allowing it to replace the signed feed."""
+    website = Path(os.path.abspath(website))
+    if website.is_symlink() or not website.is_dir():
+        fail("The website must be a regular directory.")
+    contents = {}
+    for path in sorted(website.rglob("*")):
+        if path.is_symlink():
+            fail("Website paths must not be symlinks.")
+        relative = path.relative_to(website).as_posix()
+        parts = safe_relative(relative).parts
+        if parts[0] in {"apt", "CNAME"}:
+            fail("The website must not replace APT metadata or domain settings.")
+        if path.is_dir():
+            continue
+        contents[relative] = read_file(website, relative)
+    if "index.html" not in contents:
+        fail("The website needs an index.html homepage.")
+    return contents
+
+
+def assemble(source, output, *, fingerprint=None, website=None):
     source = Path(os.path.abspath(source))
     output = Path(os.path.abspath(output))
     if output.exists() or output.is_symlink():
@@ -412,6 +433,7 @@ def assemble(source, output, *, fingerprint=None):
         metadata.append("index.html")
     # Validate every committed input before any network request.
     contents = {relative: read_file(source, relative) for relative in metadata}
+    homepage = website_files(website) if website is not None else {}
     with tempfile.TemporaryDirectory(
         prefix=".filewink-apt-site-", dir=output.parent
     ) as name:
@@ -419,6 +441,10 @@ def assemble(source, output, *, fingerprint=None):
         apt = stage / "apt"
         for relative, data in contents.items():
             path = apt / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(data)
+        for relative, data in homepage.items():
+            path = stage / relative
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(data)
         for package in manifest["packages"]:
@@ -451,12 +477,15 @@ def main():
         "--source", type=Path, default=Path(__file__).resolve().parents[1] / "apt"
     )
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--website", type=Path, help="Static homepage to publish alongside /apt/.")
     parser.add_argument(
         "--fingerprint", help="Optional independent pin for the repository key"
     )
     args = parser.parse_args()
     try:
-        destination = assemble(args.source, args.output, fingerprint=args.fingerprint)
+        destination = assemble(
+            args.source, args.output, fingerprint=args.fingerprint, website=args.website
+        )
     except (ValueError, RuntimeError, OSError, EOFError) as error:
         parser.exit(1, "APT deployment refused: " + str(error) + "\n")
     print("Verified APT site assembled at " + str(destination))

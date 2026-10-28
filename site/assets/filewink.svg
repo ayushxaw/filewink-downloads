@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <title>Filewink</title>
+  <rect width="128" height="128" rx="26" fill="#e9eee1"/>
+  <g stroke="#245b50" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M39 24h34l20 20v52a8 8 0 0 1-8 8H39a8 8 0 0 1-8-8V32a8 8 0 0 1 8-8Z" fill="#f9faf5"/>
+    <path d="M73 24v20h20" fill="none"/>
+    <path d="M50 65h1m18 1q6-6 12 0M51 80q13 12 26 0" fill="none"/>
+  </g>
+</svg>

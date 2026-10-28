@@ -1,4 +1,4 @@
-name: Publish signed APT repository
+name: Publish downloads website and signed APT repository
 
 on:
   workflow_dispatch:
@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - 'apt/**'
+      - 'site/**'
       - 'tools/**'
       - 'tests/**'
       - '.github/workflows/publish-apt.yml'
@@ -31,7 +32,9 @@ jobs:
       - name: Test repository validation
         run: python3 -m unittest discover -s tests -v
       - name: Verify signed metadata and assemble packages
-        run: python3 tools/assemble_apt.py --output _site --fingerprint B63801ACA2BA93F0A7450BACB04130F8E6E8A88F
+        run: python3 tools/assemble_apt.py --output _site --website site --fingerprint B63801ACA2BA93F0A7450BACB04130F8E6E8A88F
+      - name: Check homepage links and download boundaries
+        run: python3 tools/check_download_site.py --site _site
       - name: Exercise APT and reject altered metadata
         run: python3 tools/check_apt_client.py --site _site
       - uses: actions/configure-pages@v5
@@ -39,8 +42,11 @@ jobs:
         with:
           path: _site
   deploy:
+    name: Deploy homepage and unchanged signed feed
     needs: build
     runs-on: ubuntu-24.04
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
     permissions:
       pages: write
       id-token: write
@@ -51,7 +57,63 @@ jobs:
       - name: Publish repository
         id: deployment
         uses: actions/deploy-pages@v4
+      - name: Record deployment separately from live checks
+        env:
+          FILEWINK_SITE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          {
+            echo '### Pages deployment completed'
+            echo "Published URL: $FILEWINK_SITE_URL"
+            echo 'The homepage and signed /apt/ tree were deployed together.'
+            echo 'The independent HTTPS homepage and live signed-APT jobs determine availability; deployment alone is not a live-check pass.'
+          } >> "$GITHUB_STEP_SUMMARY"
+  verify-site:
+    name: Verify public homepage over HTTPS
+    needs: deploy
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify the published homepage and assets without authentication
+        env:
+          FILEWINK_SITE_URL: ${{ needs.deploy.outputs.page_url }}
+        run: |
+          python3 - <<'PY'
+          import hashlib, os, pathlib, time, urllib.parse, urllib.request
+          base = os.environ['FILEWINK_SITE_URL'].rstrip('/') + '/'
+          if urllib.parse.urlsplit(base).scheme != 'https':
+              raise SystemExit('Pages reports an HTTP URL. Deployment succeeded, but HTTPS verification is blocked until docs/DOMAIN_SETUP.md is completed.')
+          class HTTPSOnly(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self, request, response, code, message, headers, target):
+                  if urllib.parse.urlsplit(target).scheme != 'https':
+                      raise RuntimeError('The public homepage redirected away from HTTPS.')
+                  return super().redirect_request(request, response, code, message, headers, target)
+          opener = urllib.request.build_opener(HTTPSOnly())
+          for relative in ('index.html', 'styles.css', 'script.js', 'assets/filewink.svg'):
+              expected = hashlib.sha256(pathlib.Path('site', relative).read_bytes()).hexdigest()
+              for attempt in range(8):
+                  try:
+                      request = urllib.request.Request(urllib.parse.urljoin(base, relative), headers={'User-Agent': 'Filewink-site-check/1'})
+                      with opener.open(request, timeout=30) as response:
+                          actual = hashlib.sha256(response.read()).hexdigest()
+                      if actual != expected:
+                          raise RuntimeError('Published content differs: ' + relative)
+                      print('Verified published file:', relative)
+                      break
+                  except Exception:
+                      if attempt == 7:
+                          raise
+                      time.sleep(5)
+          PY
+      - name: Record the independent homepage result
+        if: always()
+        env:
+          CHECK_STATUS: ${{ job.status }}
+        run: |
+          echo "### Live HTTPS homepage: $CHECK_STATUS" >> "$GITHUB_STEP_SUMMARY"
+          echo 'This result does not change the completed deployment or establish signed APT installation health.' >> "$GITHUB_STEP_SUMMARY"
   verify-install:
+    name: Verify installation through the live signed APT feed
     needs: deploy
     runs-on: ubuntu-24.04
     timeout-minutes: 20
@@ -65,7 +127,7 @@ jobs:
           package = next(p for p in manifest['packages'] if p['name'] == 'filewink-archive-keyring')
           path = pathlib.Path(package['filename']).name
           url = 'https://ayushxaw.github.io/filewink-downloads/apt/' + package['filename']
-          subprocess.run(['curl', '--fail', '--location', '--retry', '5', '--output', path, url], check=True)
+          subprocess.run(['curl', '--fail', '--location', '--proto', '=https', '--proto-redir', '=https', '--retry', '5', '--output', path, url], check=True)
           data = pathlib.Path(path).read_bytes()
           assert len(data) == package['size']
           assert hashlib.sha256(data).hexdigest() == package['sha256']
@@ -134,3 +196,10 @@ jobs:
           sudo apt-get purge -y filewink-archive-keyring
           test ! -e /etc/apt/sources.list.d/filewink.sources
           test ! -e /usr/share/keyrings/filewink-archive-keyring.asc
+      - name: Record the independent live APT result
+        if: always()
+        env:
+          CHECK_STATUS: ${{ job.status }}
+        run: |
+          echo "### Live signed APT install: $CHECK_STATUS" >> "$GITHUB_STEP_SUMMARY"
+          echo 'Only this live-feed lifecycle establishes installation/update health. The local signed-feed tests and Pages deployment are reported separately.' >> "$GITHUB_STEP_SUMMARY"
