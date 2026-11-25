@@ -7,11 +7,8 @@ File processing stays on your computer. No account, uploads or ads.
 
 **[Download the Ubuntu beta](https://github.com/ayushxaw/filewink-downloads/releases/download/v0.5.4-beta.1/filewink-0.5.4-beta1-ubuntu-amd64.deb)** · [Release notes and checksums](https://github.com/ayushxaw/filewink-downloads/releases/tag/v0.5.4-beta.1)
 
-For **Ubuntu 24.04 on 64-bit Intel/AMD computers**. This is an early beta.
-The current beta1 can crash during video playback on a minimal Ubuntu 26.04
-installation; a replacement package is being checked. Use Ubuntu 24.04 for
-this download. Other distributions, older Ubuntu releases and ARM are not
-supported yet.
+The Ubuntu beta is packaged as a .deb for 64-bit Intel and AMD computers.
+The release notes list supported Ubuntu versions and known issues.
 
 ![Filewink action wheel](images/action-wheel.png)
 
@@ -37,7 +34,7 @@ Filewink. Future published versions arrive through normal APT upgrades.
 [Setup checksums](https://github.com/ayushxaw/filewink-downloads/releases/tag/apt-setup-1)
 
 Installation, upgrade selection, thirteen packaged output checks and removal
-passed on Ubuntu 24.04 in the [earlier public verification run](https://github.com/ayushxaw/filewink-downloads/actions/runs/39938333880).
+passed in the [earlier public Ubuntu verification run](https://github.com/ayushxaw/filewink-downloads/actions/runs/39938333880).
 That result predates the domain issue above and does not establish current feed
 availability.
 
