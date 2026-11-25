@@ -93,6 +93,10 @@ For an update, close Filewink, download the new installer and run it over the
 existing installation. Check the website for the latest version. Windows may
 show a SmartScreen warning because the preview is unsigned. [Download page](https://filewink.me/#windows-title)
 
+The current Windows preview uses LibreOffice for Office file conversions.
+Install the Windows 64-bit version if you need to convert Word, PowerPoint or
+Excel files. [Optional LibreOffice download](https://www.libreoffice.org/download/)
+
 ## About this repository
 
 This is the public download and issue tracker. The Filewink application

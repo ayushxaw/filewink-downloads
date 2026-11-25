@@ -577,6 +577,12 @@ h1 em {
 .windows-setup p {
   margin: 12px 0 0;
 }
+.windows-setup summary + p {
+  margin-top: 0;
+}
+.office-download-size {
+  color: #d2dbc8;
+}
 .install-detail pre {
   overflow-x: auto;
 }
