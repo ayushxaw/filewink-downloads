@@ -14,11 +14,6 @@ The release notes list supported Ubuntu versions and known issues.
 
 ## Install with APT
 
-**APT updates are temporarily unavailable while the custom domain's HTTPS
-setup is repaired.** Use the direct `.deb` installation below for now. Existing
-packages and signed metadata are retained. Keep signature and HTTPS checks
-enabled; an HTTP redirect is not a reason to disable them.
-
 Download the [APT setup package](https://github.com/ayushxaw/filewink-downloads/releases/download/apt-setup-1/filewink-archive-keyring_2026.10.23.1_all.deb),
 open a terminal in its folder, and run:
 
@@ -33,10 +28,8 @@ Filewink. Future published versions arrive through normal APT upgrades.
 [Repository details](https://ayushxaw.github.io/filewink-downloads/apt/) ·
 [Setup checksums](https://github.com/ayushxaw/filewink-downloads/releases/tag/apt-setup-1)
 
-Installation, upgrade selection, thirteen packaged output checks and removal
-passed in the [earlier public Ubuntu verification run](https://github.com/ayushxaw/filewink-downloads/actions/runs/39938333880).
-That result predates the domain issue above and does not establish current feed
-availability.
+Installation, upgrade selection, packaged output checks and removal passed
+through the live HTTPS feed. [Public Ubuntu verification](https://github.com/ayushxaw/filewink-downloads/actions/runs/45669143933)
 
 To disable this update source while keeping the app:
 
@@ -95,6 +88,10 @@ Quit Filewink first. Your originals, generated files and settings are kept.
 The Filewink 0.5.4 preview supports Windows 11 x64. Run the installer and
 enable Explorer gestures if you want Shift + hold and Shift + Space.
 [Download the Windows installer](https://github.com/ayushxaw/filewink-downloads/releases/download/v0.5.4-windows-preview.1/Filewink-0.5.4-Setup-x64.exe) · [Setup help, checksums and dependency sources](https://github.com/ayushxaw/filewink-downloads/releases/tag/v0.5.4-windows-preview.1)
+
+For an update, close Filewink, download the new installer and run it over the
+existing installation. Check the website for the latest version. Windows may
+show a SmartScreen warning because the preview is unsigned. [Download page](https://filewink.me/#windows-title)
 
 ## About this repository
 

@@ -246,6 +246,13 @@ h1 em {
 .button-primary:hover {
   background: var(--forest-deep);
 }
+.button-outline {
+  color: var(--forest-deep);
+  border-color: #a7b3a1;
+}
+.button-outline:hover {
+  background: #e9ede3;
+}
 .text-link {
   display: inline-flex;
   gap: 12px;
@@ -546,6 +553,32 @@ h1 em {
 }
 .download-secondary a:hover {
   text-decoration: underline;
+}
+.windows-setup {
+  margin-top: 16px;
+  border-top: 1px solid #6f8273;
+  font-size: 0.875rem;
+  color: #f0f3e9;
+  line-height: 1.55;
+}
+.windows-setup summary {
+  padding-block: 12px;
+  font-weight: 600;
+}
+.windows-setup summary::after {
+  color: #f0f3e9;
+}
+.windows-setup ol {
+  padding-inline-start: 1.3em;
+}
+.windows-setup li + li {
+  margin-top: 6px;
+}
+.windows-setup p {
+  margin: 12px 0 0;
+}
+.install-detail pre {
+  overflow-x: auto;
 }
 .download-secondary span {
   padding-left: 4px;
