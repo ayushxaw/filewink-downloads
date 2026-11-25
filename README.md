@@ -95,8 +95,9 @@ Quit Filewink first. Your originals, generated files and settings are kept.
 
 ## Windows
 
-Windows is in development. The native build, installer and Explorer gestures
-are being tested; there is no finished Windows download in this release.
+The Filewink 0.5.4 preview supports Windows 11 x64. Run the installer and
+enable Explorer gestures if you want Shift + hold and Shift + Space.
+[Download the Windows installer](https://github.com/ayushxaw/filewink-downloads/releases/download/v0.5.4-windows-preview.1/Filewink-0.5.4-Setup-x64.exe) · [Setup help, checksums and dependency sources](https://github.com/ayushxaw/filewink-downloads/releases/tag/v0.5.4-windows-preview.1)
 
 ## About this repository
 
@@ -108,7 +109,7 @@ The application and dependencies retain their individual licences, included in
 the installed app under **About → Third-party licences**.
 
 Found a bug? [Open an issue](https://github.com/ayushxaw/filewink-downloads/issues)
-with your Ubuntu version, what you tried and what happened. Leave private files
+with your Windows or Ubuntu version, what you tried and what happened. Leave private files
 and passwords out of public reports.
 
 Made by Ayush Awasthi. Filewink is free to use. A voluntary support link will be
