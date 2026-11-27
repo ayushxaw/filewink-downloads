@@ -922,6 +922,24 @@ kbd {
 .site-footer > div a:hover {
   text-decoration: underline;
 }
+.privacy-page {
+  max-width: 68ch;
+  padding-block: clamp(2rem, 6vw, 5rem);
+}
+.privacy-page h1 {
+  font-size: clamp(2.5rem, 6vw, 3.75rem);
+  letter-spacing: -0.04em;
+}
+.privacy-page h2 {
+  font-size: 1.375rem;
+  letter-spacing: -0.02em;
+  margin-top: 2rem;
+}
+.privacy-page p {
+  font-size: 1rem;
+  line-height: 1.65;
+  margin-top: 0.75rem;
+}
 .sr-only {
   position: absolute !important;
   width: 1px;

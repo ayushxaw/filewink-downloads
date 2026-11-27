@@ -89,7 +89,7 @@ jobs:
                       raise RuntimeError('The public homepage redirected away from HTTPS.')
                   return super().redirect_request(request, response, code, message, headers, target)
           opener = urllib.request.build_opener(HTTPSOnly())
-          for relative in ('index.html', 'styles.css', 'script.js', 'assets/filewink.svg'):
+          for relative in ('index.html', 'privacy.html', 'styles.css', 'script.js', 'assets/filewink.svg'):
               expected = hashlib.sha256(pathlib.Path('site', relative).read_bytes()).hexdigest()
               for attempt in range(8):
                   try:
