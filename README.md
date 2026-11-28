@@ -87,15 +87,15 @@ Quit Filewink first. Your originals, generated files and settings are kept.
 
 The Filewink 0.5.4 preview supports Windows 11 x64. Run the installer and
 enable Explorer gestures if you want Shift + hold and Shift + Space.
-[Download the Windows installer](https://github.com/ayushxaw/filewink-downloads/releases/download/v0.5.4-windows-preview.1/Filewink-0.5.4-Setup-x64.exe) · [Setup help, checksums and dependency sources](https://github.com/ayushxaw/filewink-downloads/releases/tag/v0.5.4-windows-preview.1)
+[Download the Windows installer](https://github.com/ayushxaw/filewink-downloads/releases/download/v0.5.5-windows-preview.1/Filewink-0.5.5-Setup-x64.exe) · [Setup help, checksums and dependency sources](https://github.com/ayushxaw/filewink-downloads/releases/tag/v0.5.5-windows-preview.1)
 
 For an update, close Filewink, download the new installer and run it over the
 existing installation. Check the website for the latest version. Windows may
 show a SmartScreen warning because the preview is unsigned. [Download page](https://filewink.me/#windows-title)
 
-The current Windows preview uses LibreOffice for Office file conversions.
-Install the Windows 64-bit version if you need to convert Word, PowerPoint or
-Excel files. [Optional LibreOffice download](https://www.libreoffice.org/download/)
+Filewink can use installed desktop Word, PowerPoint or Excel for supported PDF
+conversions. That route is still being tested on Windows 11. LibreOffice is
+available separately for users without the matching Microsoft app. [Optional LibreOffice download](https://www.libreoffice.org/download/)
 
 ## About this repository
 
